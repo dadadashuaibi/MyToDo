@@ -12,22 +12,33 @@ namespace BlankApp1.Services
         string FilePath = "C:\\Users\\Zzz\\Desktop\\aa\\MyToDo\\MyToDo\\Data\\Note\\NoTe.xlsx";
 
         public void AddNote(Note note)
-        {
-            using (var stream = new FileStream(FilePath, FileMode.Open))
+        { 
+            if (note.Content == null)
             {
-                XSSFWorkbook sheets = new XSSFWorkbook(stream);
-                var sheet = sheets.GetSheetAt(0);
-                var row = sheet.CreateRow(sheet.LastRowNum + 1);
-                row.CreateCell(0).SetCellValue(sheet.LastRowNum + 1);
-                row.CreateCell(1).SetCellValue(DateTime.Now.ToString("yyyy-MM-dd"));
-                row.CreateCell(2).SetCellValue(note.Tittle);
-                row.CreateCell(3).SetCellValue(0);
-                row.CreateCell(4).SetCellValue(note.Content);
-                using (var stream1 = new FileStream(FilePath, FileMode.Create))
+                try
                 {
-                    sheets.Write(stream1);
+                    using (var stream = new FileStream(FilePath, FileMode.Open))
+                    {
+                        XSSFWorkbook sheets = new XSSFWorkbook(stream);
+                        var sheet = sheets.GetSheetAt(0);
+                        var row = sheet.CreateRow(sheet.LastRowNum + 1);
+                        row.CreateCell(0).SetCellValue(sheet.LastRowNum + 1);
+                        row.CreateCell(1).SetCellValue(DateTime.Now.ToString("yyyy-MM-dd"));
+                        row.CreateCell(2).SetCellValue(note.Tittle);
+                        row.CreateCell(3).SetCellValue(0);
+                        row.CreateCell(4).SetCellValue(note.Content);
+                        using (var stream1 = new FileStream(FilePath, FileMode.Create))
+                        {
+                            sheets.Write(stream1);
+                        }
+                    }
+                }catch (Exception ex)
+                {
+
                 }
+               
             }
+          
         }
 
         public List<Note> GetNote()
