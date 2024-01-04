@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace BlankApp1.ViewModels
 {
@@ -54,7 +55,8 @@ namespace BlankApp1.ViewModels
         private void DeleteNote(int? id)
         {
             DataNote data = new DataNote();
-            data.RemoveNote((int)id);
+            string message= data.RemoveNote((int)id);
+            Message(message);
         }
         private void ReviseNote()
         {
@@ -68,7 +70,9 @@ namespace BlankApp1.ViewModels
             Note note = new Note();
             note.Content = content;
             note.Tittle = tittle;
-            data.AddNote(note);
+           string message= data.AddNote(note);
+            Message(message);
+
         }
         public NoteViewModel() {
             GetNote();
@@ -89,5 +93,12 @@ namespace BlankApp1.ViewModels
                
             }
         }
+        private void Message(string message)
+        {
+           
+            MessageBox.Show(message);
+
+        }
     }
+
 }

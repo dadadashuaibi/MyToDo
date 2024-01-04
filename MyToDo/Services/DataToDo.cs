@@ -17,29 +17,37 @@ namespace BlankApp1.Services
     {
         //string FilePath = System.IO.Path.Combine(Environment.CurrentDirectory, @"Data\Schedule.xls");
         string FilePath = "C:\\Users\\Zzz\\Desktop\\aa\\MyToDo\\MyToDo\\Data\\Schedule\\Schedule.xlsx";
-        public void AddToDo(string Content,string Date)
+        public string AddToDo(string Content,string Date)
         {
             if (Content != null) {
-
-                using (var stream = new FileStream(FilePath, FileMode.Open))
+                try
                 {
-                    XSSFWorkbook sheets = new XSSFWorkbook(stream);
-                    var sheet = sheets.GetSheetAt(0);
-                    var row = sheet.CreateRow(sheet.LastRowNum + 1);
-
-                    row.CreateCell(0).SetCellValue(sheet.LastRowNum);
-                    row.CreateCell(1).SetCellValue(Date);
-                    row.CreateCell(2).SetCellValue(Content);
-                    row.CreateCell(3).SetCellValue(0);
-                    row.CreateCell(4).SetCellValue(0);
-
-                    using (var stream1 = new FileStream(FilePath, FileMode.Create))
+                    using (var stream = new FileStream(FilePath, FileMode.Open))
                     {
-                        sheets.Write(stream1);
+                        XSSFWorkbook sheets = new XSSFWorkbook(stream);
+                        var sheet = sheets.GetSheetAt(0);
+                        var row = sheet.CreateRow(sheet.LastRowNum + 1);
+
+                        row.CreateCell(0).SetCellValue(sheet.LastRowNum);
+                        row.CreateCell(1).SetCellValue(Date);
+                        row.CreateCell(2).SetCellValue(Content);
+                        row.CreateCell(3).SetCellValue(0);
+                        row.CreateCell(4).SetCellValue(0);
+
+                        using (var stream1 = new FileStream(FilePath, FileMode.Create))
+                        {
+                            sheets.Write(stream1);
+                        }
                     }
+                    return "添加成功";
+                }catch (Exception ex)
+                {
+                    return "添加失败";
                 }
+               
+               
             }
-          
+            return "内容不能为空";
         }
 
         public List<ToDo> GetToDos()
@@ -83,35 +91,52 @@ namespace BlankApp1.Services
             }
         }
 
-        public void RemoveToDo(int id)
+        public string RemoveToDo(int id)
         {
-           using (var stream = new FileStream(FilePath, FileMode.Open))
-            {
-                XSSFWorkbook sheets = new XSSFWorkbook(stream);
-                var sheet = sheets.GetSheetAt(0);
-                sheet.GetRow(id).GetCell(4).SetCellValue(1);
-                using (var stream1 = new FileStream(FilePath, FileMode.Create))
+            try {
+                using (var stream = new FileStream(FilePath, FileMode.Open))
                 {
-                    sheets.Write(stream1);
+                    XSSFWorkbook sheets = new XSSFWorkbook(stream);
+                    var sheet = sheets.GetSheetAt(0);
+                    sheet.GetRow(id).GetCell(4).SetCellValue(1);
+                    using (var stream1 = new FileStream(FilePath, FileMode.Create))
+                    {
+                        sheets.Write(stream1);
+                    }
                 }
+                return "删除成功";
+            } catch {
+                return "删除失败";
             }
+          
         }
 
-        public void ReviseToDo(ToDo todo)
+        public string ReviseToDo(ToDo todo)
         {
-           using (var stream = new FileStream(FilePath, FileMode.Open))
+            try
             {
-                XSSFWorkbook sheets = new XSSFWorkbook(stream);
-                var sheet = sheets.GetSheetAt(0);
-                sheet.GetRow(todo.Id).GetCell(1).SetCellValue(todo.Date);
-                sheet.GetRow(todo.Id).GetCell(2).SetCellValue(todo.Content);
-                sheet.GetRow(todo.Id).GetCell(3).SetCellValue(todo.Iscompleted);
-                sheet.GetRow(todo.Id).GetCell(4).SetCellValue(todo.Status);
-                using (var stream1 = new FileStream(FilePath, FileMode.Create))
+                using (var stream = new FileStream(FilePath, FileMode.Open))
                 {
-                    sheets.Write(stream1);
+                    XSSFWorkbook sheets = new XSSFWorkbook(stream);
+                    var sheet = sheets.GetSheetAt(0);
+                    sheet.GetRow(todo.Id).GetCell(1).SetCellValue(todo.Date);
+                    sheet.GetRow(todo.Id).GetCell(2).SetCellValue(todo.Content);
+                    sheet.GetRow(todo.Id).GetCell(3).SetCellValue(todo.Iscompleted);
+                    sheet.GetRow(todo.Id).GetCell(4).SetCellValue(todo.Status);
+                    using (var stream1 = new FileStream(FilePath, FileMode.Create))
+                    {
+                        sheets.Write(stream1);
+                    }
                 }
+                return "修改成功";
+            }
+            catch
+            {
+
+                return "修改失败";
+
             }
         }
     }
+          
 }

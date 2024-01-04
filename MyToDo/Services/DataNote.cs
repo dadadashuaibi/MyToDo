@@ -11,9 +11,9 @@ namespace BlankApp1.Services
         // string FilePath = System.IO.Path.Combine(Environment.CurrentDirectory, @"Data\Schedule.xls");
         string FilePath = "C:\\Users\\Zzz\\Desktop\\aa\\MyToDo\\MyToDo\\Data\\Note\\NoTe.xlsx";
 
-        public void AddNote(Note note)
+        public string AddNote(Note note)
         { 
-            if (note.Content == null)
+            if (note.Content != null)
             {
                 try
                 {
@@ -32,13 +32,14 @@ namespace BlankApp1.Services
                             sheets.Write(stream1);
                         }
                     }
+                    return "添加成功";
                 }catch (Exception ex)
                 {
-
+                    return "添加失败";
                 }
                
             }
-          
+            return"内容不能为空";
         }
 
         public List<Note> GetNote()
@@ -70,38 +71,48 @@ namespace BlankApp1.Services
 
         }
 
-        public void RemoveNote(int id)
+        public string RemoveNote(int id)
         {
-
-            using (var stream = new FileStream(FilePath, FileMode.Open))
+            try
             {
-                XSSFWorkbook sheets = new XSSFWorkbook(stream);
-                var sheet = sheets.GetSheetAt(0);
-                sheet.GetRow(id).GetCell(3).SetCellValue(1);
-                using (var stream1 = new FileStream(FilePath, FileMode.Create))
+                using (var stream = new FileStream(FilePath, FileMode.Open))
                 {
-                    sheets.Write(stream1);
+                    XSSFWorkbook sheets = new XSSFWorkbook(stream);
+                    var sheet = sheets.GetSheetAt(0);
+                    sheet.GetRow(id).GetCell(3).SetCellValue(1);
+                    using (var stream1 = new FileStream(FilePath, FileMode.Create))
+                    {
+                        sheets.Write(stream1);
+                    }
                 }
+                return"删除成功";
+            } catch {
+                return "删除失败";
             }
+           
         }
 
-        public void ReviseNote(Note note)
+        public string ReviseNote(Note note)
         {
-           using(var stream = new FileStream(FilePath, FileMode.Open))
+            try
             {
-                XSSFWorkbook sheets = new XSSFWorkbook(stream);
-                var sheet = sheets.GetSheetAt(0);
-                sheet.GetRow(note.Id).GetCell(1).SetCellValue(note.Date);
-                sheet.GetRow(note.Id).GetCell(2).SetCellValue(note.Tittle);
-                sheet.GetRow(note.Id).GetCell(3).SetCellValue(note.Status);
-                sheet.GetRow(note.Id).GetCell(4).SetCellValue(note.Content);
-                using (var stream1 = new FileStream(FilePath, FileMode.Create))
+                using (var stream = new FileStream(FilePath, FileMode.Open))
                 {
-                    sheets.Write(stream1);
+                    XSSFWorkbook sheets = new XSSFWorkbook(stream);
+                    var sheet = sheets.GetSheetAt(0);
+                    sheet.GetRow(note.Id).GetCell(1).SetCellValue(note.Date);
+                    sheet.GetRow(note.Id).GetCell(2).SetCellValue(note.Tittle);
+                    sheet.GetRow(note.Id).GetCell(3).SetCellValue(note.Status);
+                    sheet.GetRow(note.Id).GetCell(4).SetCellValue(note.Content);
+                    using (var stream1 = new FileStream(FilePath, FileMode.Create))
+                    {
+                        sheets.Write(stream1);
+                    }
                 }
+                return"修改成功";
             }
-        }
-
-       
+            catch { return "修改失败"; }
+        } 
+               
     }
 }

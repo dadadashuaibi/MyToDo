@@ -45,7 +45,7 @@ namespace BlankApp1.Views
             da.Duration = TimeSpan.FromSeconds(0.3);
             addview.BeginAnimation(WidthProperty, da);
             txtContent.Text = "";
-            _DatePickerStart.Text = "";           
+            _DatePickerStart.SelectedDate=DateTime.Now;           
             addview.Visibility = Visibility.Collapsed;
         }
 

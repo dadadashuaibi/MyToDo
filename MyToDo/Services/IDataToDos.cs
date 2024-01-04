@@ -10,9 +10,9 @@ namespace BlankApp1.Services
     internal interface IDataToDos
     {
         List<ToDo> GetToDos();
-        void AddToDo(string Content,string Date);
-        void RemoveToDo(int id);
-        void ReviseToDo(ToDo todo);
+        string  AddToDo(string Content,string Date);
+        string RemoveToDo(int id);
+        string ReviseToDo(ToDo todo);
         void IsCompleted(int id);
     }
 }

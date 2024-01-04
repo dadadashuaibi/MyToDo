@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace BlankApp1.ViewModels
 {
@@ -58,7 +59,8 @@ namespace BlankApp1.ViewModels
         {
             DataToDo data = new DataToDo();
             
-            data.RemoveToDo ((int)obj);
+           string message= data.RemoveToDo ((int)obj);
+            Message(message);
         }
         private void ReviseTodo()
         {
@@ -69,7 +71,8 @@ namespace BlankApp1.ViewModels
         private void AddTodo()
         {
             DataToDo data = new DataToDo();
-                data.AddToDo(content, Date.ToString("yyyy-MM-dd"));           
+               string message= data.AddToDo(content, Date.ToString("yyyy-MM-dd"));
+            Message(message);
         }
         private void GetToDos()
         {
@@ -94,6 +97,12 @@ namespace BlankApp1.ViewModels
             AddCommand = new DelegateCommand(AddTodo);
             ReviseCommand = new DelegateCommand(ReviseTodo);
             DeleteCommand = new DelegateCommand<int?>(DeleteTodo);
+        }
+        private void Message(string message)
+        {
+
+            MessageBox.Show(message);
+
         }
     }
 }

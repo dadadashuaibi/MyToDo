@@ -10,8 +10,8 @@ namespace BlankApp1.Services
     internal interface IDataNote
     {
         List<Note> GetNote();
-        void AddNote(Note note);
-        void RemoveNote(int id);
-        void ReviseNote(Note note);
+        string AddNote(Note note);
+        string RemoveNote(int id);
+        string ReviseNote(Note note);
     }
 }
