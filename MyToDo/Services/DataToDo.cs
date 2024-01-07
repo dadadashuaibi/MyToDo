@@ -2,6 +2,7 @@
 using ImTools;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.Formula.Functions;
+using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using Org.BouncyCastle.Pqc.Crypto.Lms;
 using System;
@@ -16,7 +17,7 @@ namespace BlankApp1.Services
     internal class DataToDo : IDataToDos
     {
         //string FilePath = System.IO.Path.Combine(Environment.CurrentDirectory, @"Data\Schedule.xls");
-        string FilePath = "C:\\Users\\Zzz\\Desktop\\aa\\MyToDo\\MyToDo\\Data\\Schedule\\Schedule.xlsx";
+        string FilePath = "C:\\Users\\Zzz\\Desktop\\aa\\MyToDo\\MyToDo\\Data\\Schedule\\ToDo.xlsx";
         public string AddToDo(string Content,string Date)
         {
             if (Content != null) {
@@ -42,7 +43,7 @@ namespace BlankApp1.Services
                     return "添加成功";
                 }catch (Exception ex)
                 {
-                    return "添加失败";
+                    return $"添加失败: {ex.Message}";
                 }
                
                
@@ -52,29 +53,36 @@ namespace BlankApp1.Services
 
         public List<ToDo> GetToDos()
         {
-            List<ToDo> ScheduleList = new List<ToDo>();
+            List<ToDo> ToDoList = new List<ToDo>();
 
-            
-            using (var stream = new FileStream(FilePath, FileMode.Open))
+            try
             {
-                XSSFWorkbook sheets = new XSSFWorkbook(stream);
-                var sheet = sheets.GetSheetAt(0);
-                for (int row = 1; row <= sheet.LastRowNum; row++)
+                using (var stream = new FileStream(FilePath, FileMode.Open))
                 {
-                    if (sheet.GetRow(row) != null)
+                    XSSFWorkbook sheets = new XSSFWorkbook(stream);
+                    sheets.MissingCellPolicy = MissingCellPolicy.CREATE_NULL_AS_BLANK;
+                    var sheet = sheets.GetSheetAt(0);
+                    for (int row = 1; row <= sheet.LastRowNum; row++)
                     {
-                        ScheduleList.Add(new ToDo
+                        if (sheet.GetRow(row) != null)
                         {
-                            Id = Convert.ToInt32(sheet.GetRow(row).GetCell(0).ToString()),
-                            Date = sheet.GetRow(row).GetCell(1).ToString(),
-                            Content = sheet.GetRow(row).GetCell(2).ToString(),
-                            Iscompleted = Convert.ToInt32(sheet.GetRow(row).GetCell(3).ToString()),
-                            Status = Convert.ToInt32(sheet.GetRow(row).GetCell(4 ).ToString())
-                        });
+                            ToDoList.Add(new ToDo
+                            {
+                                Id = int.Parse(sheet.GetRow(row).GetCell(0).ToString()),
+                                Date = sheet.GetRow(row).GetCell(1).ToString(),
+                                Content = sheet.GetRow(row).GetCell(2).ToString(),
+                                Iscompleted = int.Parse(sheet.GetRow(row).GetCell(3).ToString()),
+                                Status = int.Parse(sheet.GetRow(row).GetCell(4).ToString())
+                            });
+                        }
                     }
                 }
+                return ToDoList;
             }
-            return ScheduleList;
+            catch (Exception ex) { 
+                return new List<ToDo>();
+            }
+           
         }
 
         public void IsCompleted(int id)
@@ -105,8 +113,8 @@ namespace BlankApp1.Services
                     }
                 }
                 return "删除成功";
-            } catch {
-                return "删除失败";
+            } catch(Exception ex) {
+                return $"删除失败: {ex.Message}";
             }
           
         }

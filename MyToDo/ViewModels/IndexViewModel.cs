@@ -1,6 +1,7 @@
 ﻿using BlankApp1.Models;
 using BlankApp1.Services;
 using Prism.Mvvm;
+using Prism.Regions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BlankApp1.ViewModels
 {
-    internal class IndexViewModel:BindableBase
+    internal class IndexViewModel:BindableBase,INavigationAware
     {
 
 
@@ -61,6 +62,21 @@ namespace BlankApp1.ViewModels
             {
                 Schedules.Add(item1);
             }
+        }
+
+        public void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            
+        }
+
+        public bool IsNavigationTarget(NavigationContext navigationContext)
+        {
+            return false;
+        }
+
+        public void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+          
         }
     }
 }

@@ -3,6 +3,7 @@ using BlankApp1.Services;
 using Prism.Commands;
 using Prism.Common;
 using Prism.Mvvm;
+using Prism.Regions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,7 +14,7 @@ using System.Windows;
 
 namespace BlankApp1.ViewModels
 {
-    class ToDoViewModel:BindableBase
+    class ToDoViewModel:BindableBase, INavigationAware
     {
         private int id;
 
@@ -103,6 +104,22 @@ namespace BlankApp1.ViewModels
 
             MessageBox.Show(message);
 
+        }
+
+        public void OnNavigatedTo(NavigationContext navigationContext)
+        {
+           
+        }
+
+        public bool IsNavigationTarget(NavigationContext navigationContext)
+        {
+            // 每次导航都创建新的View和ViewModel实例
+            return false;
+        }
+
+        public void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+          
         }
     }
 }

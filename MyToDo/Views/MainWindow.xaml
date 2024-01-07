@@ -14,55 +14,35 @@
             <ColumnDefinition Width="*" />
 
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0">
-            <ListBox>
+        <StackPanel Grid.Column="0" Width="200">
 
-                <ListBoxItem
-                    Width="200"
-                    Height="50"
-                    Background="AntiqueWhite">
-                    <Button
-                        Background="Transparent"
-                        BorderThickness="0"
-                        Command="{Binding command}"
-                        CommandParameter="IndexView"
-                        Content="首页" />
-                </ListBoxItem>
-                <ListBoxItem
-                    Width="200"
-                    Height="50"
-                    Background="AntiqueWhite">
-                    <Button
-                        Background="Transparent"
-                        BorderThickness="0"
-                        Command="{Binding command}"
-                         CommandParameter="ToDoView"
-                        Content="待办" />
-                </ListBoxItem>
-                <ListBoxItem
-                    Width="200"
-                    Height="50"
-                    Background="AntiqueWhite">
-                    <Button
-                        Background="Transparent"
-                        BorderThickness="0"
-                        Command="{Binding command}"
-                         CommandParameter="NoteView"
-                        Content="日记" />
-                </ListBoxItem>
-                <ListBoxItem
-                    Width="200"
-                    Height="50"
-                    Background="AntiqueWhite">
-                    <Button
-                        Background="Transparent"
-                        BorderThickness="0"
-                        Command="{Binding command}"
-                         CommandParameter="TrashView"
-                        Content="回收站" />
-                </ListBoxItem>
-               
-            </ListBox>
+            <Button
+                Background="Black"
+                Command="{Binding command}"
+                CommandParameter="IndexView"
+                Content="首页" />
+
+            <Button
+                Background="Transparent"
+                BorderThickness="0"
+                Command="{Binding command}"
+                CommandParameter="ToDoView"
+                Content="待办" />
+
+            <Button
+                Background="Transparent"
+                BorderThickness="0"
+                Command="{Binding command}"
+                CommandParameter="NoteView"
+                Content="日记" />
+
+            <Button
+                Background="Transparent"
+                BorderThickness="0"
+                Command="{Binding command}"
+                CommandParameter="TrashView"
+                Content="回收站" />
+
         </StackPanel>
         <StackPanel Grid.Column="1">
             <ContentControl prism:RegionManager.RegionName="ContentRegion" />

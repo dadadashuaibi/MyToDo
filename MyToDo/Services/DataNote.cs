@@ -9,7 +9,7 @@ namespace BlankApp1.Services
     internal class DataNote : IDataNote
     {
         // string FilePath = System.IO.Path.Combine(Environment.CurrentDirectory, @"Data\Schedule.xls");
-        string FilePath = "C:\\Users\\Zzz\\Desktop\\aa\\MyToDo\\MyToDo\\Data\\Note\\NoTe.xlsx";
+        string FilePath = "C:\\Users\\Zzz\\Desktop\\aa\\MyToDo\\MyToDo\\Data\\Note\\Note.xlsx";
 
         public string AddNote(Note note)
         { 
@@ -35,7 +35,8 @@ namespace BlankApp1.Services
                     return "添加成功";
                 }catch (Exception ex)
                 {
-                    return "添加失败";
+                    return $"添加失败: {ex.Message}";
+                   
                 }
                
             }
@@ -46,27 +47,33 @@ namespace BlankApp1.Services
         {
             List<Note> NoteList = new List<Note>();
 
-
-            using (var stream = new FileStream(FilePath, FileMode.Open))
+            try
             {
-                XSSFWorkbook sheets = new XSSFWorkbook(stream);
-                var sheet = sheets.GetSheetAt(0);
-                for (int row = 1; row <= sheet.LastRowNum; row++)
+                using (var stream = new FileStream(FilePath, FileMode.Open))
                 {
-                    if (sheet.GetRow(row) != null)
+                    XSSFWorkbook sheets = new XSSFWorkbook(stream);
+                    var sheet = sheets.GetSheetAt(0);
+                    for (int row = 1; row <= sheet.LastRowNum; row++)
                     {
-                        NoteList.Add(new Note
+                        if (sheet.GetRow(row) != null)
                         {
-                            Id = row,
-                            Date = sheet.GetRow(row).GetCell(1).ToString(),
-                            Tittle = sheet.GetRow(row).GetCell(2).ToString(),
-                            Status = Convert.ToInt32(sheet.GetRow(row).GetCell(3).ToString()),
-                            Content = sheet.GetRow(row).GetCell(4).ToString()
-                        });
+                            NoteList.Add(new Note
+                            {
+                                Id = row,
+                                Date = sheet.GetRow(row).GetCell(1).ToString(),
+                                Tittle = sheet.GetRow(row).GetCell(2).ToString(),
+                                Status = Convert.ToInt32(sheet.GetRow(row).GetCell(3).ToString()),
+                                Content = sheet.GetRow(row).GetCell(4).ToString()
+                            });
+                        }
                     }
                 }
+                return NoteList;
             }
+            catch { 
             return NoteList;
+            }
+           
 
 
         }
@@ -86,8 +93,8 @@ namespace BlankApp1.Services
                     }
                 }
                 return"删除成功";
-            } catch {
-                return "删除失败";
+            } catch(Exception ex) {
+                return $"删除失败:{ ex.Message}";
             }
            
         }
@@ -112,6 +119,7 @@ namespace BlankApp1.Services
                 return"修改成功";
             }
             catch { return "修改失败"; }
+           
         } 
                
     }
